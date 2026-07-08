@@ -2,283 +2,255 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>오늘 뭐 먹지?</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
 
 :root{
-  /* jelly pastel palette (also used by category colors) */
-  --red:#FF8FA3;
-  --mustard:#FFC15E;
-  --pine:#63C7A6;
-  --navy:#7EA8E0;
-  --brown:#D3A17C;
-  --teal:#57C9C0;
-  --plum:#B18FE0;
-  --slate:#90A4C8;
-
-  --bg-1:#FFE3EF;
-  --bg-2:#E7E4FF;
-  --bg-3:#DFF6F1;
-  --card:#FFFFFF;
-  --card-soft:#FFF6FB;
-  --ink:#5B5470;
-  --ink-soft:#A69FBC;
-  --line: rgba(120,110,150,0.14);
-  --pink-deep:#FF6D91;
+  --bg:#F3F4F7;
+  --paper:#FFFFFF;
+  --paper-dark:#EEF0F4;
+  --ink:#191B20;
+  --ink-soft:#767B87;
+  --line: rgba(24,26,31,0.09);
+  --red:#FF5A36;
+  --mustard:#F0A202;
+  --pine:#16A34A;
+  --navy:#2F6FED;
+  --brown:#B5651D;
+  --teal:#0D9488;
+  --plum:#7C4DFF;
+  --slate:#64748B;
 }
 *{ box-sizing:border-box; }
 body{
   margin:0;
-  padding:30px 16px 70px;
+  padding:32px 16px 60px;
   min-height:100vh;
-  background:
-    radial-gradient(circle at 15% 0%, var(--bg-1), transparent 45%),
-    radial-gradient(circle at 90% 10%, var(--bg-2), transparent 45%),
-    radial-gradient(circle at 50% 100%, var(--bg-3), transparent 55%),
-    #FDF4FB;
-  font-family:'Gaegu', system-ui, sans-serif;
+  background:var(--bg);
+  font-family:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
   color:var(--ink);
   display:flex;
   justify-content:center;
 }
 .board{ width:100%; max-width:460px; }
-
 .card{
-  background:var(--card);
-  border:2.5px solid #FFFFFF;
-  box-shadow: 0 14px 30px -12px rgba(180,140,190,0.45), 0 3px 0 rgba(255,255,255,0.6) inset;
-  border-radius:28px;
-  padding:24px 22px 22px;
+  background:var(--paper);
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 14px 30px -14px rgba(16,24,40,0.16);
+  border-radius:20px;
+  padding:26px 24px;
   position:relative;
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
-.card.tilt-a{ transform:rotate(-0.5deg); }
-.card.tilt-b{ transform:rotate(0.5deg); }
+.card.tilt-a, .card.tilt-b{ transform:none; }
 
 .eyebrow{
-  font-family:'Jua', sans-serif;
-  font-size:12px; letter-spacing:0.04em; color:var(--ink-soft);
-  display:flex; justify-content:space-between; margin-bottom:8px;
+  font-size:12px; color:var(--ink-soft); font-weight:500;
+  display:flex; justify-content:space-between; margin-bottom:12px;
 }
 h1{
-  font-family:'Jua', sans-serif; font-weight:400; font-size:34px;
-  letter-spacing:0.01em; margin:0 0 6px;
-  background:linear-gradient(90deg, var(--pink-deep), var(--plum));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-weight:800; font-size:26px;
+  letter-spacing:-0.02em; margin:0 0 6px; color:var(--ink);
 }
-.sub{ font-size:15px; color:var(--ink-soft); margin-bottom:14px; line-height:1.45; }
-
-.perf{ border:none; border-top:2px dashed #FFD3E4; margin:16px 0 18px; position:relative; }
-.perf::before,.perf::after{
-  content:'🍬'; position:absolute; top:-13px; font-size:16px;
-}
-.perf::before{ left:-6px; }
-.perf::after{ right:-6px; }
+.sub{ font-size:14px; color:var(--ink-soft); margin-bottom:20px; line-height:1.6; }
+.perf{ border:none; border-top:1px solid var(--line); margin:20px 0; }
 
 .group-label{
-  font-family:'Jua', sans-serif; font-size:14px; letter-spacing:0.02em;
-  color:var(--ink); margin-bottom:10px;
+  font-size:11px; letter-spacing:0.04em; font-weight:700;
+  text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;
 }
 .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
 .chip{
-  font-family:'Gaegu', sans-serif; font-weight:700; font-size:14.5px; padding:7px 14px;
-  border:2px solid var(--catcolor,#E7DEF3); border-radius:20px;
-  background:#FFFFFF; cursor:pointer; color:var(--ink);
-  transition:transform .12s ease, background .15s ease, color .15s ease; user-select:none;
-  box-shadow:0 3px 0 rgba(0,0,0,0.04);
+  font-size:13px; font-weight:500; padding:8px 14px;
+  border:none; border-radius:999px; background:var(--paper-dark);
+  cursor:pointer; color:var(--ink-soft); transition:all .15s ease; user-select:none;
 }
-.chip:active{ transform:translateY(2px); box-shadow:none; }
-.chip.cat-active{
-  background:var(--catcolor,var(--pink-deep)); border-color:var(--catcolor,var(--pink-deep));
-  color:#FFFFFF; box-shadow:0 4px 12px -3px var(--catcolor,var(--pink-deep));
-}
+.chip.cat-active{ background:var(--catcolor,var(--ink)); color:#fff; font-weight:600; box-shadow:0 4px 10px -4px rgba(16,24,40,0.4); }
 
 .toggle-row{
   display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:18px; font-size:15px; font-weight:700;
-  background:var(--card-soft); border-radius:18px; padding:12px 14px;
+  margin-bottom:18px; font-size:13.5px;
 }
 .switch{
-  position:relative; width:46px; height:26px; border:none;
-  border-radius:20px; cursor:pointer; flex-shrink:0;
-  background:#EBE3F5; transition:background .18s ease;
+  position:relative; width:44px; height:26px; border:none;
+  border-radius:999px; cursor:pointer; flex-shrink:0; background:#E2E4EA; transition:background .2s ease;
 }
 .switch::after{
   content:''; position:absolute; top:3px; left:3px; width:20px; height:20px;
-  border-radius:50%; background:#FFFFFF; box-shadow:0 2px 4px rgba(0,0,0,0.15);
-  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+  border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(16,24,40,0.3); transition:transform .2s ease;
 }
-.switch.on::after{ transform:translateX(20px); }
-.switch.on{ background:linear-gradient(90deg,var(--pink-deep),var(--plum)); }
+.switch.on::after{ transform:translateX(18px); }
+.switch.on{ background:var(--pine); }
 
-.tabs{ display:flex; gap:10px; margin-bottom:18px; }
+.tabs{ display:flex; gap:4px; margin-bottom:18px; background:var(--paper-dark); padding:4px; border-radius:14px; }
 .tab{
-  flex:1; text-align:center; font-family:'Jua', sans-serif; font-size:15px;
-  padding:12px 6px; border:2px solid #F0E7FA; border-radius:18px;
-  background:#FFFFFF; color:var(--ink-soft); cursor:pointer;
-  transition:transform .1s ease;
+  flex:1; text-align:center; font-size:13.5px;
+  font-weight:600; padding:10px 6px; border:none; border-radius:10px;
+  background:transparent; color:var(--ink-soft); cursor:pointer; transition:all .15s ease;
 }
-.tab:active{ transform:translateY(2px); }
-.tab.active{
-  background:linear-gradient(135deg,#FFE0EC,#EFE4FF); color:var(--ink);
-  border-color:#FFFFFF; box-shadow:0 6px 14px -6px rgba(177,143,224,0.6);
-}
+.tab.active{ background:#fff; color:var(--ink); box-shadow:0 1px 4px rgba(16,24,40,0.14); }
 .panel{ display:none; }
 .panel.active{ display:block; }
 
 .draw-btn{
-  width:100%; font-family:'Jua', sans-serif; font-size:20px;
-  letter-spacing:0.02em; padding:16px; color:#FFFFFF; border:none; border-radius:22px;
-  cursor:pointer;
-  background:linear-gradient(135deg,#FF9DBB,#FF6D91);
-  box-shadow:0 6px 0 #F1567C, 0 12px 20px -8px rgba(255,109,145,0.7);
-  transition:transform .09s ease, box-shadow .09s ease;
+  width:100%; font-weight:700; font-size:16px;
+  padding:16px; background:var(--red);
+  color:#fff; border:none; border-radius:14px; cursor:pointer;
+  box-shadow:0 10px 22px -10px rgba(255,90,54,0.65); transition:transform .12s ease, box-shadow .12s ease;
 }
-.draw-btn:active{ transform:translateY(5px); box-shadow:0 1px 0 #F1567C, 0 4px 10px -6px rgba(255,109,145,0.7); }
-.draw-btn:disabled{ opacity:0.75; cursor:default; }
+.draw-btn:active{ transform:scale(0.98); box-shadow:0 4px 10px -6px rgba(255,90,54,0.5); }
+.draw-btn:disabled{ opacity:0.5; box-shadow:none; cursor:default; }
 
 .result-wrap{ max-height:0; overflow:hidden; transition:max-height .5s ease; }
-.result-wrap.show{ max-height:360px; }
+.result-wrap.show{ max-height:340px; }
 .result{
-  margin-top:18px; padding:18px 14px 6px; border-radius:22px;
-  background:linear-gradient(160deg,#FFF7FB,#F5F0FF);
+  margin-top:20px; padding-top:20px; border-top:1px solid var(--line);
   text-align:center; position:relative;
 }
-.result-label{ font-family:'Jua',sans-serif; font-size:13px; color:var(--ink-soft); margin-bottom:6px; }
-.result-name{ font-family:'Jua', sans-serif; font-size:30px; color:var(--ink); min-height:36px; }
-.result-meta{ font-size:14px; color:var(--ink-soft); margin-top:8px; line-height:1.6; }
+.result-label{ font-size:12px; font-weight:600; color:var(--ink-soft); margin-bottom:8px; }
+.result-name{ font-size:26px; font-weight:800; min-height:34px; color:var(--ink); }
+.result-meta{ font-size:13px; color:var(--ink-soft); margin-top:8px; line-height:1.6; }
 .stamp{
-  display:inline-block; margin-top:14px; padding:6px 18px;
-  color:#FFFFFF; font-family:'Jua', sans-serif; font-size:14px;
-  letter-spacing:0.06em; border-radius:16px;
-  background:linear-gradient(135deg,#8AD9C6,#5FC9B6);
-  box-shadow:0 5px 12px -4px rgba(95,201,182,0.7);
-  transform:rotate(-5deg) scale(0); opacity:0;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
+  display:inline-block; margin-top:14px; padding:6px 14px; background:rgba(255,90,54,0.12);
+  color:var(--red); font-weight:700; font-size:12px;
+  border-radius:999px; transform:scale(0.8);
+  opacity:0; transition:transform .2s ease, opacity .2s ease;
 }
-.stamp::before{ content:'🎉 '; }
-.stamp.show{ transform:rotate(-5deg) scale(1); opacity:1; }
+.stamp.show{ transform:scale(1); opacity:1; }
 .reroll{
-  margin-top:12px; background:none; border:none; font-family:'Gaegu', sans-serif; font-weight:700;
-  font-size:14px; color:var(--plum); text-decoration:underline; cursor:pointer;
+  margin-top:0; background:var(--paper-dark); border:none;
+  font-size:12.5px; font-weight:600; color:var(--ink-soft); border-radius:999px; padding:8px 14px; cursor:pointer;
 }
 .result-actions{
   display:flex; gap:10px; justify-content:center; align-items:center;
-  flex-wrap:wrap; margin-top:12px;
+  flex-wrap:wrap; margin-top:14px;
 }
 .slack-btn{
-  font-family:'Gaegu', sans-serif; font-weight:700; font-size:13.5px; padding:8px 14px;
-  border:2px solid #CBD9F5; border-radius:16px; background:#FFFFFF;
-  color:var(--navy); cursor:pointer; transition:transform .1s ease;
+  font-size:12.5px; font-weight:600; padding:8px 14px;
+  border:none; border-radius:999px; background:var(--paper-dark);
+  color:var(--ink); cursor:pointer;
 }
-.slack-btn:active{ transform:translateY(2px); }
 .slack-btn:disabled{ opacity:0.5; cursor:default; }
-.slack-status{ font-size:13px; color:var(--ink-soft); margin-top:8px; min-height:16px; }
+.slack-status{ font-size:12px; color:var(--ink-soft); margin-top:8px; min-height:14px; }
 
 .list-toggle{
   display:block; width:100%; text-align:center; background:none; border:none;
-  font-family:'Gaegu', sans-serif; font-weight:700; font-size:14px; color:var(--ink-soft);
-  text-decoration:underline; cursor:pointer; margin-top:16px;
+  font-size:13px; font-weight:600; color:var(--navy);
+  cursor:pointer; margin-top:16px;
 }
 .list-view{ margin-top:10px; max-height:0; overflow:hidden; transition:max-height .4s ease; }
 .list-view.show{ max-height:400px; overflow-y:auto; }
 .list-row{
   display:flex; justify-content:space-between; align-items:center; gap:8px;
-  font-size:14px; padding:10px 12px; margin-bottom:8px;
-  background:var(--card-soft); border-radius:16px;
+  font-size:13px; padding:10px 0; border-bottom:1px solid var(--line);
 }
+.list-row:last-child{ border-bottom:none; }
 .list-row-main{ flex:1; min-width:0; }
-.list-row-name{ font-family:'Jua',sans-serif; font-size:15px; }
-.list-row-meta{ color:var(--ink-soft); font-size:13px; margin-top:2px; }
+.list-row-name{ font-weight:700; color:var(--ink); }
+.list-row-meta{ color:var(--ink-soft); font-size:12px; margin-top:2px; }
 .pick-btn{
-  font-family:'Gaegu', sans-serif; font-weight:700; font-size:13px; padding:6px 12px;
-  border:none; border-radius:14px; background:linear-gradient(135deg,#FFE0EC,#EFE4FF);
-  color:var(--ink); cursor:pointer; flex-shrink:0;
+  font-size:11.5px; font-weight:600; padding:6px 12px;
+  border:none; border-radius:999px; background:var(--paper-dark); color:var(--ink);
+  cursor:pointer; flex-shrink:0;
 }
 
 .wheel-area{ text-align:center; }
-.wheel-note{ font-family:'Jua',sans-serif; font-size:14px; color:var(--ink-soft); margin-bottom:14px; }
-.wheel-wrap{ position:relative; width:270px; height:270px; margin:0 auto 20px; }
+.wheel-note{ font-size:12.5px; color:var(--ink-soft); margin-bottom:16px; }
+.wheel-wrap{ position:relative; width:260px; height:260px; margin:0 auto 20px; }
 .pointer{
-  position:absolute; top:-8px; left:50%; transform:translateX(-50%);
-  width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent;
-  border-top:20px solid var(--pink-deep); z-index:3;
-  filter:drop-shadow(0 3px 3px rgba(255,109,145,0.4));
+  position:absolute; top:-4px; left:50%; transform:translateX(-50%);
+  width:0; height:0; border-left:9px solid transparent; border-right:9px solid transparent;
+  border-top:15px solid var(--red); z-index:3; filter:drop-shadow(0 2px 3px rgba(16,24,40,0.3));
 }
 .wheel{
   width:100%; height:100%; border-radius:50%; position:relative;
-  border:8px solid #FFFFFF;
-  box-shadow:0 10px 26px -8px rgba(177,143,224,0.6);
+  border:6px solid #fff; box-shadow:0 0 0 1px var(--line), 0 18px 34px -14px rgba(16,24,40,0.4);
   transition:transform 4s cubic-bezier(.13,.71,.13,1);
   overflow:hidden;
 }
 .wheel-hub{
-  position:absolute; top:50%; left:50%; width:38px; height:38px; margin:-19px 0 0 -19px;
-  border-radius:50%; background:#FFFFFF; border:none;
-  box-shadow:0 3px 8px rgba(0,0,0,0.18); z-index:2;
-  display:flex; align-items:center; justify-content:center; font-size:18px;
+  position:absolute; top:50%; left:50%; width:34px; height:34px; margin:-17px 0 0 -17px;
+  border-radius:50%; background:#fff; box-shadow:0 2px 8px rgba(16,24,40,0.25); z-index:2;
 }
-.wheel-hub::after{ content:'🍽️'; }
 .wheel-label{ position:absolute; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
 .wheel-label span{
-  display:inline-block; color:#FFFFFF;
-  font-family:'Jua', sans-serif; white-space:nowrap;
-  text-shadow:0 1px 3px rgba(0,0,0,0.35);
+  display:inline-block; color:#fff;
+  font-weight:700; white-space:nowrap;
+  text-shadow:0 1px 3px rgba(0,0,0,0.45);
 }
 
 .history h2, .manage h2{
-  font-family:'Jua', sans-serif; font-size:17px; letter-spacing:0.01em;
-  margin:0 0 14px; display:flex; justify-content:space-between; align-items:center;
+  font-size:15px; font-weight:800;
+  margin:0 0 14px; display:flex; justify-content:space-between; align-items:center; color:var(--ink);
 }
 .clear-btn, .toggle-link{
-  font-family:'Gaegu', sans-serif; font-weight:700; font-size:13px; color:var(--ink-soft);
-  background:none; border:none; text-decoration:underline; cursor:pointer;
+  font-size:12.5px; font-weight:600; color:var(--navy);
+  background:none; border:none; cursor:pointer;
 }
 .hist-row{
-  display:flex; justify-content:space-between; align-items:center; font-size:14.5px;
-  padding:9px 12px; margin-bottom:8px; background:var(--card-soft); border-radius:14px; gap:8px;
+  display:flex; justify-content:space-between; align-items:center; font-size:13px; padding:9px 0;
+  border-bottom:1px solid var(--line); gap:8px;
 }
-.hist-main{ display:flex; align-items:center; gap:0; min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:700; }
-.hist-date{ color:var(--ink-soft); flex-shrink:0; font-size:13px; }
-.hist-tag{ font-size:12px; padding:3px 10px; border-radius:12px; color:#FFFFFF; margin-left:8px; flex-shrink:0; font-family:'Jua',sans-serif; }
+.hist-row:last-child{ border-bottom:none; }
+.hist-main{ display:flex; align-items:center; gap:0; min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600; }
+.hist-date{ color:var(--ink-soft); flex-shrink:0; font-weight:400; }
+.hist-tag{ font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:999px; color:#fff; margin-left:8px; flex-shrink:0; }
 .hist-del{
   font-size:14px; color:var(--ink-soft); background:none; border:none; cursor:pointer;
-  flex-shrink:0; line-height:1; padding:2px 4px;
+  flex-shrink:0; line-height:1; padding:5px; border-radius:50%; transition:background .15s ease, color .15s ease;
 }
-.hist-del:hover{ color:var(--pink-deep); }
-.empty{ font-size:14px; color:var(--ink-soft); text-align:center; padding:10px 0; }
+.hist-del:hover{ color:var(--red); background:var(--paper-dark); }
+.empty{ font-size:13px; color:var(--ink-soft); text-align:center; padding:12px 0; }
 
 .manage-toggle{ text-align:center; }
-.manage-body{ margin-top:14px; }
+.manage-body{ margin-top:16px; }
 .form-row{ display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
 .form-row input{
-  font-family:'Gaegu', sans-serif; font-weight:700; font-size:14px; padding:10px 12px;
-  border:2px solid #F0E7FA; border-radius:14px; background:#FFFFFF;
-  color:var(--ink); flex:1; min-width:80px; outline:none;
+  font-size:13px; padding:10px 12px;
+  border:1.5px solid var(--line); border-radius:10px; background:var(--paper);
+  color:var(--ink); flex:1; min-width:80px; transition:border-color .15s ease;
 }
-.form-row input:focus{ border-color:#FFC0D6; }
-.form-row input::placeholder{ color:var(--ink-soft); font-weight:400; }
+.form-row input:focus{ outline:none; border-color:var(--red); }
+.form-row input::placeholder{ color:#A3A8B3; }
 .add-btn{
-  width:100%; font-family:'Jua', sans-serif; font-size:16px;
-  padding:12px; color:#FFFFFF; border:none; border-radius:18px; cursor:pointer; margin-bottom:16px;
-  background:linear-gradient(135deg,#8FD9C4,#5FC9B6);
-  box-shadow:0 5px 0 #4FB6A3;
-  transition:transform .09s ease, box-shadow .09s ease;
+  width:100%; font-weight:700; font-size:14px;
+  padding:12px; background:var(--pine);
+  color:#fff; border:none; border-radius:12px; cursor:pointer; margin-bottom:16px; transition:transform .1s ease;
 }
-.add-btn:active{ transform:translateY(4px); box-shadow:0 1px 0 #4FB6A3; }
+.add-btn:active{ transform:scale(0.98); }
 .manage-list{ max-height:280px; overflow-y:auto; }
 .manage-row{
   display:flex; justify-content:space-between; align-items:center; gap:8px;
-  font-size:14px; padding:9px 12px; margin-bottom:8px; background:var(--card-soft); border-radius:14px;
+  font-size:12.5px; padding:9px 0; border-bottom:1px solid var(--line);
 }
-.manage-row-main{ min-width:0; font-weight:700; }
-.manage-row-meta{ color:var(--ink-soft); font-size:12.5px; margin-top:2px; font-weight:400; }
+.manage-row-main{ min-width:0; }
+.manage-row-meta{ color:var(--ink-soft); font-size:11.5px; margin-top:2px; }
 .del-btn{
-  font-size:15px; color:var(--pink-deep); background:none; border:none; cursor:pointer;
-  flex-shrink:0; line-height:1;
+  font-size:15px; color:var(--ink-soft); background:none; border:none; cursor:pointer;
+  flex-shrink:0; line-height:1; padding:5px; border-radius:50%; transition:background .15s ease, color .15s ease;
 }
+.del-btn:hover{ color:var(--red); background:var(--paper-dark); }
+
+.header-icon{
+  width:44px; height:44px; border-radius:14px; background:rgba(255,90,54,0.12);
+  color:var(--red); display:flex; align-items:center; justify-content:center; margin-bottom:14px;
+}
+.icon{ width:14px; height:14px; flex-shrink:0; }
+.label-icon{ display:inline-flex; margin-right:6px; color:var(--ink-soft); vertical-align:-2px; }
+.toggle-label{ display:inline-flex; align-items:center; gap:8px; }
+.tab{ display:flex; align-items:center; justify-content:center; gap:6px; }
+.draw-btn{ display:flex; align-items:center; justify-content:center; gap:8px; }
+.reroll{ display:inline-flex; align-items:center; gap:6px; }
+.slack-btn{ display:inline-flex; align-items:center; gap:6px; }
+.list-toggle{ display:flex; align-items:center; justify-content:center; gap:6px; }
+.chevron{ display:inline-flex; transition:transform .2s ease; color:var(--ink-soft); margin-left:2px; }
+.chevron.open{ transform:rotate(180deg); }
+.h2-title{ display:inline-flex; align-items:center; gap:8px; }
+.add-btn{ display:flex; align-items:center; justify-content:center; gap:8px; }
+.clear-btn, .toggle-link{ display:inline-flex; align-items:center; gap:6px; }
+.result-label{ display:flex; align-items:center; justify-content:center; gap:6px; }
+.pick-btn{ display:inline-flex; align-items:center; gap:4px; }
+.hist-del, .del-btn{ display:inline-flex; align-items:center; justify-content:center; }
 </style>
 </head>
 <body>
@@ -286,40 +258,41 @@ h1{
 
   <div class="card tilt-a">
     <div class="eyebrow"><span id="ticketNo">NO. 001</span><span id="ticketDate">2026.07.08</span></div>
-    <h1>오늘 뭐 먹지? 🍽️</h1>
-    <div class="sub">용산 전자상가 맛집 목록 기준 ✨ 카테고리 뽑기 or 랜덤 돌림판, 골라보세요!</div>
+    <div class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M4 11a8 8 0 0 0 16 0"/><path d="M4 11h16"/><path d="M9 7l1-2"/><path d="M15 7l-1-2"/><path d="M12 7V4"/></svg></div>
+    <h1>오늘 뭐 먹지?</h1>
+    <div class="sub">용산 전자상가 맛집 목록 기준. 카테고리 뽑기 or 랜덤 돌림판, 골라보세요.</div>
 
     <hr class="perf">
 
-    <div class="group-label">🏷️ 카테고리</div>
+    <div class="group-label"><span class="label-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="8" cy="12" r="1" fill="currentColor" stroke="none"/></svg></span>카테고리</div>
     <div class="chips" id="catChips"></div>
 
     <div class="toggle-row">
-      <span>🚶 가까운 곳만 (도보 10분 이내)</span>
+      <span class="toggle-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><ellipse cx="8" cy="8" rx="3" ry="4"/><ellipse cx="16" cy="16" rx="3" ry="4"/></svg> 가까운 곳만 (도보 10분 이내)</span>
       <div class="switch" id="nearSwitch"></div>
     </div>
 
     <div class="tabs">
-      <button class="tab active" id="tabCategory">🎰 카테고리 뽑기</button>
-      <button class="tab" id="tabWheel">🎡 랜덤 돌림판</button>
+      <button class="tab active" id="tabCategory"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> 카테고리 뽑기</button>
+      <button class="tab" id="tabWheel"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="5.6" y2="18.4"/></svg> 랜덤 돌림판</button>
     </div>
 
     <div class="panel active" id="panelCategory">
-      <button class="draw-btn" id="drawBtn">🎲 메뉴 뽑기</button>
+      <button class="draw-btn" id="drawBtn"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" width="16" height="16"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg> 메뉴 뽑기</button>
       <div class="result-wrap" id="resultWrap">
         <div class="result">
-          <div class="result-label">오늘의 선택 💛</div>
+          <div class="result-label"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" width="13" height="13"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg> 오늘의 선택</div>
           <div class="result-name" id="resultName">-</div>
           <div class="result-meta" id="resultMeta"></div>
           <div class="stamp" id="stamp">확정</div>
           <div class="result-actions">
-            <button class="reroll" id="rerollBtn">다시 뽑기 🔄</button>
-            <button class="slack-btn" id="slackBtnCat">💬 슬랙으로 보내기</button>
+            <button class="reroll" id="rerollBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg> 다시 뽑기</button>
+            <button class="slack-btn" id="slackBtnCat"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 1 1 21 11.5z"/></svg> 슬랙으로 보내기</button>
           </div>
           <div class="slack-status" id="slackStatusCat"></div>
         </div>
       </div>
-      <button class="list-toggle" id="listToggle">필터 결과 목록 보기 (거리순) 📋</button>
+      <button class="list-toggle" id="listToggle"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg> 필터 결과 목록 보기 (거리순) <span class="chevron" id="listChevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg></span></button>
       <div class="list-view" id="listView"></div>
     </div>
 
@@ -331,16 +304,16 @@ h1{
           <div class="wheel-hub"></div>
           <div class="wheel" id="wheel"></div>
         </div>
-        <button class="draw-btn" id="spinBtn">🎡 돌림판 돌리기</button>
+        <button class="draw-btn" id="spinBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="5.6" y2="18.4"/></svg> 돌림판 돌리기</button>
       </div>
       <div class="result-wrap" id="resultWrapWheel">
         <div class="result">
-          <div class="result-label">오늘의 선택 💛</div>
+          <div class="result-label"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" width="13" height="13"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg> 오늘의 선택</div>
           <div class="result-name" id="resultNameWheel">-</div>
           <div class="result-meta" id="resultMetaWheel"></div>
           <div class="stamp" id="stampWheel">확정</div>
           <div class="result-actions">
-            <button class="slack-btn" id="slackBtnWheel">💬 슬랙으로 보내기</button>
+            <button class="slack-btn" id="slackBtnWheel"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 1 1 21 11.5z"/></svg> 슬랙으로 보내기</button>
           </div>
           <div class="slack-status" id="slackStatusWheel"></div>
         </div>
@@ -349,34 +322,34 @@ h1{
   </div>
 
   <div class="card history tilt-b">
-    <h2>🕐 최근 먹은 곳 <button class="clear-btn" id="clearBtn">기록 지우기</button></h2>
+    <h2><span class="h2-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> 최근 먹은 곳</span><button class="clear-btn" id="clearBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg> 기록 지우기</button></h2>
     <div id="histList"></div>
   </div>
 
   <div class="card manage tilt-b">
     <div class="manage-toggle">
-      <button class="toggle-link" id="slackToggle">🔔 슬랙 알림 설정</button>
+      <button class="toggle-link" id="slackToggle"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg> 슬랙 알림 설정 <span class="chevron" id="slackChevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg></span></button>
     </div>
     <div class="manage-body" id="slackBody" style="display:none;">
       <div class="group-label" style="margin-top:14px;">슬랙 Incoming Webhook URL</div>
       <div class="form-row">
         <input type="text" id="inWebhook" placeholder="https://hooks.slack.com/services/...">
       </div>
-      <button class="add-btn" id="saveWebhookBtn">저장</button>
-      <div id="webhookSaved" style="font-size:13px;color:var(--ink-soft);"></div>
-      <div style="font-size:13px;color:var(--ink-soft);margin-top:10px;line-height:1.6;">
+      <button class="add-btn" id="saveWebhookBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> 저장</button>
+      <div id="webhookSaved" style="font-size:11px;color:var(--ink-soft);"></div>
+      <div style="font-size:11px;color:var(--ink-soft);margin-top:10px;line-height:1.6;">
         슬랙 워크스페이스 → Apps → Incoming Webhooks 에서 채널용 웹훅 URL을 만들어 붙여넣으세요.
-        이 URL은 브라우저에만 저장되고 다른 곳으로 전송되지 않아요. 🔒
+        이 URL은 브라우저에만 저장되고 다른 곳으로 전송되지 않아요.
       </div>
     </div>
   </div>
 
   <div class="card manage tilt-a">
     <div class="manage-toggle">
-      <button class="toggle-link" id="manageToggle">➕ 맛집 추가/삭제하기</button>
+      <button class="toggle-link" id="manageToggle"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 맛집 추가/삭제하기 <span class="chevron" id="manageChevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg></span></button>
     </div>
     <div class="manage-body" id="manageBody" style="display:none;">
-      <div class="group-label" style="margin-top:14px;">🍜 새 맛집 추가</div>
+      <div class="group-label" style="margin-top:14px;">새 맛집 추가</div>
       <div class="form-row">
         <input type="text" id="inName" placeholder="상호명">
         <input type="text" id="inCat" placeholder="카테고리 (예: 한식)">
@@ -386,8 +359,8 @@ h1{
         <input type="text" id="inWalk" placeholder="도보(분)">
         <input type="text" id="inDist" placeholder="거리 (예: 500m, 선택)">
       </div>
-      <div id="addError" style="display:none;color:var(--pink-deep);font-size:13.5px;margin-bottom:8px;"></div>
-      <button class="add-btn" id="addBtn">추가하기</button>
+      <div id="addError" style="display:none;color:var(--red);font-size:11.5px;margin-bottom:8px;"></div>
+      <button class="add-btn" id="addBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 추가하기</button>
       <div class="group-label">전체 목록</div>
       <div class="manage-list" id="manageList"></div>
     </div>
@@ -396,6 +369,30 @@ h1{
 </div>
 
 <script>
+// Claude.ai 아트팩트 환경이 아닐 때(=일반 웹 호스팅)를 위한 window.storage 폴리필.
+// 브라우저 localStorage를 사용합니다. 단, 이 방식은 "브라우저(기기)별 저장"이라
+// 팀원 각자 자신의 브라우저에만 기록/설정이 남고, 서로 공유되진 않습니다.
+if(!window.storage){
+  window.storage = {
+    async get(key){
+      const v = localStorage.getItem(key);
+      if(v === null) throw new Error('키를 찾을 수 없음: ' + key);
+      return { key, value: v, shared: false };
+    },
+    async set(key, value){
+      localStorage.setItem(key, value);
+      return { key, value, shared: false };
+    },
+    async delete(key){
+      localStorage.removeItem(key);
+      return { key, deleted: true, shared: false };
+    },
+    async list(prefix){
+      const keys = Object.keys(localStorage).filter(k => !prefix || k.startsWith(prefix));
+      return { keys, prefix, shared: false };
+    }
+  };
+}
 const DEFAULT_DATA = [
   {name:"두원", cat:"한식", menu:"돼지국밥", dist:"667m", walk:11},
   {name:"백식당", cat:"한식", menu:"육회비빔밥", dist:"875m", walk:14},
@@ -430,6 +427,9 @@ const DEFAULT_DATA = [
   {name:"정통우거지탕", cat:"한식", menu:"우거지탕", dist:"681m", walk:11},
 ];
 
+const ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+const ICON_TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg>';
+const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>';
 const PALETTE = ['var(--red)','var(--mustard)','var(--pine)','var(--navy)','var(--brown)','var(--teal)','var(--plum)','var(--slate)'];
 function buildCatColorMap(){
   const sorted = [...state.cats].sort((a,b)=>a.localeCompare(b,'ko'));
@@ -558,13 +558,13 @@ function renderHistory(){
   const wrap = document.getElementById('histList');
   wrap.innerHTML = '';
   if(state.history.length===0){
-    wrap.innerHTML = '<div class="empty">아직 뽑은 곳이 없어요 🍽️</div>';
+    wrap.innerHTML = '<div class="empty">아직 뽑은 곳이 없어요</div>';
     return;
   }
   state.history.slice(0,8).forEach(h=>{
     const row = document.createElement('div');
     row.className = 'hist-row';
-    row.innerHTML = `<span class="hist-main">${h.name}</span><span class="hist-date">${h.date}</span><span class="hist-tag" style="background:${catColorRaw(h.cat)}">${h.cat}</span><button class="hist-del" title="이 기록 지우기">✕</button>`;
+    row.innerHTML = `<span class="hist-main">${h.name}</span><span class="hist-date">${h.date}</span><span class="hist-tag" style="background:${catColorRaw(h.cat)}">${h.cat}</span><button class="hist-del" title="이 기록 지우기">${ICON_X}</button>`;
     row.querySelector('.hist-del').onclick = async ()=>{
       state.history = state.history.filter(x=>x.id!==h.id);
       renderHistory(); updateTicketNo(); await saveHistory();
@@ -632,8 +632,7 @@ document.getElementById('rerollBtn').onclick = drawCategory;
 document.getElementById('listToggle').onclick = ()=>{
   const el = document.getElementById('listView');
   el.classList.toggle('show');
-  document.getElementById('listToggle').textContent =
-    el.classList.contains('show') ? '목록 닫기' : '필터 결과 목록 보기 (거리순) 📋';
+  document.getElementById('listChevron').classList.toggle('open', el.classList.contains('show'));
   refreshListView();
 };
 function refreshListView(){
@@ -647,7 +646,7 @@ function refreshListView(){
     row.className = 'list-row';
     row.innerHTML = `<div class="list-row-main"><div class="list-row-name">${r.name} <span style="color:${catColorRaw(r.cat)}">· ${r.cat}</span></div>
       <div class="list-row-meta">${r.menu} · ${r.dist} · 도보 ${r.walk}분</div></div>
-      <button class="pick-btn">선택</button>`;
+      <button class="pick-btn">${ICON_CHECK} 선택</button>`;
     row.querySelector('.pick-btn').onclick = ()=>{
       pushHistory(r);
       lastResultCat = r;
@@ -672,7 +671,7 @@ function renderWheel(){
   document.getElementById('spinBtn').disabled = n===0;
   wheel.innerHTML = '';
   wheel.style.background = 'transparent';
-  if(n===0){ wheel.style.background = 'var(--card-soft)'; return; }
+  if(n===0){ wheel.style.background = 'var(--paper-dark)'; return; }
 
   const cx=150, cy=150, R=140;
   const anglePer = 360/n;
@@ -686,7 +685,7 @@ function renderWheel(){
       const [x2,y2] = polarPoint(cx,cy,R,end);
       const largeArc = (end-start)>180 ? 1 : 0;
       const fill = resolveColor(catColorRaw(r.cat));
-      return `<path d="M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z" fill="${fill}" stroke="#FFFFFF" stroke-width="3"/>`;
+      return `<path d="M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z" fill="${fill}" stroke="#E7E3D6" stroke-width="3"/>`;
     });
     svg = parts.join('');
   }
@@ -764,7 +763,7 @@ document.getElementById('manageToggle').onclick = ()=>{
   const body = document.getElementById('manageBody');
   const show = body.style.display === 'none';
   body.style.display = show ? 'block' : 'none';
-  document.getElementById('manageToggle').textContent = show ? '➖ 목록 닫기' : '➕ 맛집 추가/삭제하기';
+  document.getElementById('manageChevron').classList.toggle('open', show);
   if(show) renderManageList();
 };
 
@@ -778,7 +777,7 @@ function renderManageList(){
     row.className = 'manage-row';
     row.innerHTML = `<div class="manage-row-main"><span style="color:${catColorRaw(r.cat)}">[${r.cat}]</span> ${r.name}
       <div class="manage-row-meta">${r.menu} · ${r.dist} · 도보 ${r.walk}분</div></div>
-      <button class="del-btn">✕</button>`;
+      <button class="del-btn">${ICON_TRASH}</button>`;
     row.querySelector('.del-btn').onclick = async ()=>{
       state.restaurants = state.restaurants.filter(x=>x.id!==r.id);
       state.cats = new Set(state.restaurants.map(x=>x.cat));
@@ -842,7 +841,7 @@ document.getElementById('slackToggle').onclick = ()=>{
   const body = document.getElementById('slackBody');
   const show = body.style.display === 'none';
   body.style.display = show ? 'block' : 'none';
-  document.getElementById('slackToggle').textContent = show ? '➖ 슬랙 알림 설정 닫기' : '🔔 슬랙 알림 설정';
+  document.getElementById('slackChevron').classList.toggle('open', show);
 };
 
 async function sendToSlack(r, statusElId, btnEl){
