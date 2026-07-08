@@ -380,6 +380,7 @@ h1{
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 // 팀 공용 Firebase 프로젝트 - 맛집 목록/기록을 모두가 같이 보고 씁니다.
 const firebaseConfig = {
@@ -392,6 +393,13 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+async function ensureAuth(){
+  try{
+    await firebase.auth().signInAnonymously();
+  }catch(e){
+    console.error('로그인 실패', e);
+  }
+}
 </script>
 <script>
 // Claude.ai 아트팩트 환경이 아닐 때(=일반 웹 호스팅)를 위한 window.storage 폴리필.
@@ -912,6 +920,7 @@ document.getElementById('slackBtnWheel').onclick = ()=>{
 // ---- Init ----
 (async function init(){
   await loadWebhook();
+  await ensureAuth();
   await loadRestaurants();
   watchHistory();
 })();
