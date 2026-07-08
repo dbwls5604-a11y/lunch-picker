@@ -627,8 +627,10 @@ document.getElementById('clearBtn').onclick = async ()=>{
 };
 
 function pushHistory(r){
-  db.collection('history').add({ name:r.name, cat:r.cat, date: fmtDate(new Date()), ts: Date.now() })
-    .catch(e=>console.error('기록 저장 실패', e));
+  try{
+    db.collection('history').add({ name:r.name, cat:r.cat, date: fmtDate(new Date()), ts: Date.now() })
+      .catch(e=>console.error('기록 저장 실패', e));
+  }catch(e){ console.error('기록 저장 실패', e); }
 }
 
 // ---- Category draw mode ----
@@ -664,8 +666,8 @@ function drawCategory(){
       metaEl.textContent = `${final.cat} · ${final.menu} · ${final.dist} · 도보 ${final.walk}분`;
       stampEl.classList.add('show');
       btn.disabled = false; spinningCat = false;
-      pushHistory(final);
       lastResultCat = final;
+      pushHistory(final);
     }
   }, 70);
 }
@@ -780,8 +782,8 @@ function spinWheel(){
     document.getElementById('resultMetaWheel').textContent = `${final.cat} · ${final.menu} · ${final.dist} · 도보 ${final.walk}분`;
     document.getElementById('stampWheel').classList.add('show');
     btn.disabled = false; spinningWheel = false;
-    pushHistory(final);
     lastResultWheel = final;
+    pushHistory(final);
   }, 4150);
 }
 document.getElementById('spinBtn').onclick = spinWheel;
