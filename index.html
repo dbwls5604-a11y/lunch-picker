@@ -717,7 +717,7 @@ function refreshListView(){
 let wheelRotation = 0;
 let wheelPool = [];
 function renderWheel(){
-  wheelPool = shuffleArray(getPool());
+  wheelPool = shuffleArray(getDrawPool());
   const wheel = document.getElementById('wheel');
   const note = document.getElementById('wheelNote');
   const n = wheelPool.length;
